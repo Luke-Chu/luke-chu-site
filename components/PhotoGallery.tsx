@@ -26,8 +26,11 @@ export default function PhotoGallery({ photos }: PhotoGalleryProps) {
               <Image
                 src={photo.image}
                 alt={photo.title}
-                width={1200}
-                height={800}
+                width={640}
+                height={426}
+                quality={55}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                loading="lazy"
                 className="h-72 w-full object-cover transition duration-500 group-hover:scale-105"
               />
             </div>

@@ -50,6 +50,9 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
           alt={photo.title}
           width={1600}
           height={1000}
+          unoptimized
+          loading="eager"
+          sizes="100vw"
           className="h-auto max-h-[80vh] w-full object-contain bg-[#f6f6f6]"
         />
         <div className="flex items-center justify-between border-t border-black/10 p-4">
