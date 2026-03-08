@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "关于我" },
-  { href: "/photography", label: "摄影" },
+  { href: "/photography", label: "我的兴趣" },
 ];
 
 export default function Navbar() {

@@ -5,8 +5,7 @@ export default function PhotographyPage() {
   return (
     <main className="bg-[#fcfcfc]">
       <section className="mx-auto max-w-6xl px-6 pb-14 pt-20">
-        <p className="text-lg font-medium text-black/70">我的兴趣</p>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-6xl">
+        <h1 className="text-3xl font-semibold tracking-tight md:text-5xl">
           一半烟火以谋生，一半俗事为热爱
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-black/60 md:text-base">
