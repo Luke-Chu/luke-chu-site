@@ -38,11 +38,11 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
     <div
       role="dialog"
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-6"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-6"
       onClick={onClose}
     >
       <div
-        className="relative w-full max-w-5xl border border-[#27272a] bg-[#0a0a0a]"
+        className="relative w-full max-w-5xl overflow-hidden rounded-2xl bg-white"
         onClick={(event) => event.stopPropagation()}
       >
         <Image
@@ -50,19 +50,19 @@ export default function PhotoModal({ photo, onClose }: PhotoModalProps) {
           alt={photo.title}
           width={1600}
           height={1000}
-          className="h-auto max-h-[80vh] w-full object-contain"
+          className="h-auto max-h-[80vh] w-full object-contain bg-[#f6f6f6]"
         />
-        <div className="flex items-center justify-between border-t border-[#27272a] p-4">
+        <div className="flex items-center justify-between border-t border-black/10 p-4">
           <div>
-            <p className="text-sm">{photo.title}</p>
-            <p className="text-xs text-[#a1a1aa]">{photo.category}</p>
+            <p className="text-sm font-medium">{photo.title}</p>
+            <p className="text-xs text-black/55">{photo.category}</p>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="border border-[#27272a] px-3 py-1 text-xs text-[#a1a1aa] transition-colors hover:text-white"
+            className="rounded-full border border-black/15 px-3 py-1 text-xs text-black/60 transition-colors hover:text-black"
           >
-            Close
+            关闭
           </button>
         </div>
       </div>

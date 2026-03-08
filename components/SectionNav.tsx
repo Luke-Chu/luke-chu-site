@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type SectionNavItem = {
   id: string;
@@ -34,8 +34,8 @@ export default function SectionNav({ items }: SectionNavProps) {
         }
       },
       {
-        rootMargin: "-35% 0px -55% 0px",
-        threshold: [0.1, 0.25, 0.5, 0.75, 1],
+        rootMargin: "-45% 0px -45% 0px",
+        threshold: [0.2, 0.4, 0.6, 0.8],
       },
     );
 
@@ -43,6 +43,16 @@ export default function SectionNav({ items }: SectionNavProps) {
 
     return () => observer.disconnect();
   }, [items]);
+
+  const activeIndex = Math.max(
+    0,
+    items.findIndex((item) => item.id === activeId),
+  );
+
+  const visibleItems = useMemo(
+    () => items.filter((_, index) => Math.abs(index - activeIndex) <= 1),
+    [activeIndex, items],
+  );
 
   const handleClick = (id: string) => {
     const target = document.getElementById(id);
@@ -56,30 +66,31 @@ export default function SectionNav({ items }: SectionNavProps) {
   };
 
   return (
-    <aside className="hidden lg:block">
-      <div className="sticky top-[120px]">
-        <h2 className="mb-4 text-xs uppercase tracking-[0.2em] text-[#a1a1aa]">About</h2>
-        <nav aria-label="Section navigation">
-          <ul className="space-y-3 text-sm">
-            {items.map((item) => {
-              const active = activeId === item.id;
+    <aside className="pointer-events-none fixed left-6 top-1/2 z-40 hidden -translate-y-1/2 lg:block">
+      <div className="pointer-events-auto rounded-full border border-black/10 bg-white/75 px-4 py-5 backdrop-blur">
+        <ul className="space-y-3">
+          {visibleItems.map((item) => {
+            const index = items.findIndex((entry) => entry.id === item.id);
+            const distance = Math.abs(index - activeIndex);
+            const current = distance === 0;
 
-              return (
-                <li key={item.id}>
-                  <button
-                    type="button"
-                    onClick={() => handleClick(item.id)}
-                    className={`text-left transition-colors ${
-                      active ? "text-white" : "text-[#a1a1aa] hover:text-white"
-                    }`}
-                  >
-                    {item.label}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
+            return (
+              <li key={item.id}>
+                <button
+                  type="button"
+                  onClick={() => handleClick(item.id)}
+                  className={`block text-left text-sm transition-all ${
+                    current
+                      ? "scale-100 font-medium text-black opacity-100"
+                      : "scale-95 font-normal text-black/45 opacity-70 hover:text-black/70"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </aside>
   );

@@ -3,16 +3,19 @@ import { photos } from "@/data/photos";
 
 export default function PhotographyPage() {
   return (
-    <main className="mx-auto max-w-6xl px-6 pb-24 pt-14">
-      <section className="border-b border-[#27272a] pb-10">
-        <h1 className="text-4xl font-semibold tracking-tight md:text-5xl">Photography</h1>
-        <p className="mt-4 text-sm text-[#a1a1aa] md:text-base">
-          A collection of moments captured through my lens.
+    <main className="bg-[#fcfcfc]">
+      <section className="mx-auto max-w-6xl px-6 pb-14 pt-20">
+        <p className="text-xs tracking-[0.22em] text-black/40">摄影</p>
+        <h1 className="mt-4 text-4xl font-semibold tracking-tight md:text-6xl">摄影作品</h1>
+        <p className="mt-5 max-w-2xl text-sm leading-relaxed text-black/60 md:text-base">
+          记录光线、结构与情绪。这里收录的是我在旅行和日常中拍下的片段，它们不是宏大叙事，而是关于当下的微小证据。
         </p>
       </section>
 
-      <section className="pt-10">
-        <PhotoGallery photos={photos} />
+      <section className="border-t border-black/10 bg-white">
+        <div className="mx-auto max-w-6xl px-6 py-12">
+          <PhotoGallery photos={photos} />
+        </div>
       </section>
     </main>
   );
