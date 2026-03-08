@@ -8,14 +8,23 @@ export default function ExperienceItem({ item }: ExperienceItemProps) {
   return (
     <article className="rounded-3xl border border-black/10 bg-white p-7 shadow-[0_10px_30px_rgba(0,0,0,0.04)]">
       <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-        <h3 className="text-2xl font-semibold tracking-tight">{item.company}</h3>
+        <h3 className="text-2xl font-semibold tracking-tight">
+          {item.company} · {item.role}
+        </h3>
         <p className="text-sm text-black/50">{item.period}</p>
       </div>
-      <p className="mt-1 text-sm text-black/60">{item.role}</p>
 
-      <div className="mt-6 rounded-2xl border border-black/10 bg-[#fafafa] p-5">
-        <h4 className="text-sm font-semibold">项目介绍</h4>
-        <p className="mt-3 text-sm leading-relaxed text-black/70">{item.projectIntro}</p>
+      <p className="mt-5 text-sm leading-relaxed text-black/70">{item.projectIntro}</p>
+
+      <div className="mt-5 flex flex-wrap gap-2">
+        {item.stack.map((tech) => (
+          <span
+            key={tech}
+            className="rounded-full border border-black/15 px-3 py-1 text-xs text-black/55"
+          >
+            {tech}
+          </span>
+        ))}
       </div>
 
       <div className="mt-6 space-y-5">
@@ -32,17 +41,6 @@ export default function ExperienceItem({ item }: ExperienceItemProps) {
               ))}
             </ul>
           </div>
-        ))}
-      </div>
-
-      <div className="mt-6 flex flex-wrap gap-2">
-        {item.stack.map((tech) => (
-          <span
-            key={tech}
-            className="rounded-full border border-black/15 px-3 py-1 text-xs text-black/55"
-          >
-            {tech}
-          </span>
         ))}
       </div>
     </article>
