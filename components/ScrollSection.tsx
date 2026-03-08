@@ -5,12 +5,14 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 type ScrollSectionProps = {
   id: string;
   className?: string;
+  direction?: "up" | "down";
   children: ReactNode;
 };
 
 export default function ScrollSection({
   id,
   className = "",
+  direction = "up",
   children,
 }: ScrollSectionProps) {
   const sectionRef = useRef<HTMLElement | null>(null);
@@ -36,6 +38,9 @@ export default function ScrollSection({
     return () => observer.disconnect();
   }, []);
 
+  const hiddenMotionClass =
+    direction === "down" ? "-translate-y-8 opacity-0" : "translate-y-8 opacity-0";
+
   return (
     <section
       id={id}
@@ -44,7 +49,7 @@ export default function ScrollSection({
     >
       <div
         className={`w-full py-16 transition-all duration-700 ${
-          visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+          visible ? "translate-y-0 opacity-100" : hiddenMotionClass
         }`}
       >
         {children}

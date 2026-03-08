@@ -4,21 +4,15 @@ import ProjectCard from "@/components/ProjectCard";
 import ScrollSection from "@/components/ScrollSection";
 import SectionNav from "@/components/SectionNav";
 import { profile } from "@/data/profile";
-import {
-  education,
-  experience,
-  projects,
-  skillGroups,
-  summaryItems,
-} from "@/data/resume";
+import { education, experience, projects, skillCards, summaryItems } from "@/data/resume";
 
 const sectionItems = [
   { id: "overview", label: "总览" },
   { id: "education", label: "教育" },
   { id: "skills", label: "技能" },
-  { id: "experience", label: "经历" },
+  { id: "internship", label: "实习" },
   { id: "projects", label: "项目" },
-  { id: "summary", label: "总结" },
+  { id: "summary", label: "评价" },
 ];
 
 export default function Home() {
@@ -26,7 +20,7 @@ export default function Home() {
     <main>
       <SectionNav items={sectionItems} />
 
-      <ScrollSection id="overview" className="bg-white">
+      <ScrollSection id="overview" className="bg-white" direction="up">
         <Hero
           name={profile.name}
           role={profile.role}
@@ -38,57 +32,33 @@ export default function Home() {
         />
       </ScrollSection>
 
-      <ScrollSection id="education" className="border-y border-black/10 bg-[#fafafa]">
+      <ScrollSection
+        id="education"
+        className="border-y border-black/10 bg-[#fafafa]"
+        direction="down"
+      >
         <div className="mx-auto w-full max-w-5xl px-6">
-          <div className="mb-10 text-center">
-            <p className="text-xs tracking-[0.2em] text-black/40">教育</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">教育背景</h2>
-          </div>
+          <h2 className="mb-10 text-center text-3xl font-semibold tracking-tight md:text-4xl">
+            教育背景
+          </h2>
 
-          <div className="grid gap-5 md:grid-cols-2">
+          <div className="space-y-5">
             {education.map((item) => (
               <article
                 key={`${item.school}-${item.period}`}
                 className="rounded-3xl border border-black/10 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
               >
-                <p className="text-sm text-black/45">{item.period}</p>
-                <h3 className="mt-2 text-xl font-semibold">{item.school}</h3>
-                <p className="mt-1 text-sm text-black/65">
-                  {item.major} · {item.degree}
-                </p>
-                <ul className="mt-4 space-y-2 text-sm leading-relaxed text-black/60">
-                  {item.notes.map((note) => (
-                    <li key={note}>• {note}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </ScrollSection>
+                <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+                  <p className="text-base font-semibold">{item.school}</p>
+                  <p className="text-sm text-black/70">{item.majorAndDegree}</p>
+                  <p className="text-sm text-black/50">{item.period}</p>
+                </div>
 
-      <ScrollSection id="skills" className="border-b border-black/10 bg-[#f5f5f5]">
-        <div className="mx-auto w-full max-w-5xl px-6">
-          <div className="mb-10 text-center">
-            <p className="text-xs tracking-[0.2em] text-black/40">技能</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">技术能力</h2>
-          </div>
-
-          <div className="grid gap-5 sm:grid-cols-2">
-            {skillGroups.map((group) => (
-              <article
-                key={group.title}
-                className="rounded-3xl border border-black/10 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
-              >
-                <h3 className="text-lg font-semibold">{group.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-black/60">{group.summary}</p>
-                <ul className="mt-4 flex flex-wrap gap-2">
-                  {group.items.map((skill) => (
-                    <li
-                      key={skill}
-                      className="rounded-full border border-black/15 px-3 py-1 text-xs text-black/60"
-                    >
-                      {skill}
+                <ul className="mt-5 space-y-2 text-sm leading-relaxed text-black/70">
+                  {item.achievements.map((achievement) => (
+                    <li key={achievement} className="flex gap-3">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-black/40" />
+                      <span>{achievement}</span>
                     </li>
                   ))}
                 </ul>
@@ -98,12 +68,45 @@ export default function Home() {
         </div>
       </ScrollSection>
 
-      <ScrollSection id="experience" className="border-b border-black/10 bg-[#fafafa]">
+      <ScrollSection id="skills" className="border-b border-black/10 bg-[#f5f5f5]" direction="up">
         <div className="mx-auto w-full max-w-5xl px-6">
-          <div className="mb-10 text-center">
-            <p className="text-xs tracking-[0.2em] text-black/40">经历</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">实践经历</h2>
+          <h2 className="mb-10 text-center text-3xl font-semibold tracking-tight md:text-4xl">
+            技术能力
+          </h2>
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            {skillCards.map((card) => (
+              <article
+                key={card.title}
+                className="rounded-3xl border border-black/10 bg-white p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)]"
+              >
+                <h3 className="text-lg font-semibold">{card.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-black/65">{card.summary}</p>
+                <ul className="mt-4 flex flex-wrap gap-2">
+                  {card.tags.map((tag) => (
+                    <li
+                      key={tag}
+                      className="rounded-full border border-black/15 px-3 py-1 text-xs text-black/55"
+                    >
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
           </div>
+        </div>
+      </ScrollSection>
+
+      <ScrollSection
+        id="internship"
+        className="border-b border-black/10 bg-[#fafafa]"
+        direction="down"
+      >
+        <div className="mx-auto w-full max-w-5xl px-6">
+          <h2 className="mb-10 text-center text-3xl font-semibold tracking-tight md:text-4xl">
+            实习经历
+          </h2>
           <div className="space-y-5">
             {experience.map((item) => (
               <ExperienceItem key={`${item.company}-${item.period}`} item={item} />
@@ -112,26 +115,24 @@ export default function Home() {
         </div>
       </ScrollSection>
 
-      <ScrollSection id="projects" className="border-b border-black/10 bg-[#f7f7f7]">
+      <ScrollSection id="projects" className="border-b border-black/10 bg-[#f7f7f7]" direction="up">
         <div className="mx-auto w-full max-w-5xl px-6">
-          <div className="mb-10 text-center">
-            <p className="text-xs tracking-[0.2em] text-black/40">项目</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">项目展示</h2>
-          </div>
+          <h2 className="mb-10 text-center text-3xl font-semibold tracking-tight md:text-4xl">
+            项目经历
+          </h2>
           <div className="space-y-5">
             {projects.map((project) => (
-              <ProjectCard key={project.name} project={project} />
+              <ProjectCard key={`${project.name}-${project.period}`} project={project} />
             ))}
           </div>
         </div>
       </ScrollSection>
 
-      <ScrollSection id="summary" className="bg-[#f3f4f6]">
-        <div className="mx-auto w-full max-w-4xl px-6">
-          <div className="mb-10 text-center">
-            <p className="text-xs tracking-[0.2em] text-black/40">总结</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight md:text-4xl">个人总结</h2>
-          </div>
+      <ScrollSection id="summary" className="bg-[#f3f4f6]" direction="down">
+        <div className="mx-auto w-full max-w-5xl px-6">
+          <h2 className="mb-10 text-center text-3xl font-semibold tracking-tight md:text-4xl">
+            自我评价
+          </h2>
           <ul className="space-y-4">
             {summaryItems.map((item) => (
               <li

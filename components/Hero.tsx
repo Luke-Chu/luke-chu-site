@@ -21,8 +21,7 @@ export default function Hero({
 }: HeroProps) {
   return (
     <div className="mx-auto flex w-full max-w-4xl flex-col items-center justify-center px-6 text-center">
-      <p className="text-xs tracking-[0.24em] text-black/45">LUKE-CHU.COM</p>
-      <h1 className="mt-4 text-5xl font-semibold tracking-tight md:text-7xl">{name}</h1>
+      <h1 className="text-5xl font-semibold tracking-tight md:text-7xl">{name}</h1>
       <p className="mt-4 text-lg text-black/70 md:text-2xl">{role}</p>
       <p className="mt-8 max-w-3xl text-base leading-relaxed text-black/70">{tagline}</p>
       <p className="mt-3 max-w-3xl text-sm leading-relaxed text-black/55 md:text-base">{intro}</p>

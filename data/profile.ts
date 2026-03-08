@@ -7,22 +7,22 @@ export type Contact = {
 
 export const profile = {
   name: "Luke Chu",
-  role: "后端工程师",
-  tagline: "构建可靠的后端系统与 AI 应用，让复杂能力稳定落地。",
+  role: "后端开发工程师",
+  tagline: "热爱技术，追求代码的优雅与效率。",
   intro:
-    "我专注于 Java 后端、分布式架构与 AI 工程化实践，关注系统可维护性、稳定性和可观测性。",
+    "我是应届毕业生，具备扎实的后端开发基础与持续学习能力，能够快速理解复杂业务并推动需求落地。重视团队沟通与协作，在项目中保持主动性和执行力，注重代码质量、交付效率与长期可维护性。",
   focus: [
-    "后端架构设计",
-    "分布式系统治理",
-    "RAG 应用工程化",
-    "业务系统性能优化",
+    "扎实技术基础",
+    "快速学习能力",
+    "高效沟通协作",
+    "主动负责推进",
   ],
   resumeHref: "/resume.pdf",
   contacts: [
     {
       label: "邮箱",
-      value: "luke.chu@outlook.com",
-      href: "mailto:luke.chu@outlook.com",
+      value: "chu@chd.edu.cn",
+      href: "mailto:chu@chd.edu.cn",
     },
     {
       label: "GitHub",
