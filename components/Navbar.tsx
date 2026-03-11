@@ -1,11 +1,11 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
   { href: "/", label: "关于我" },
-  { href: "/photography", label: "我的兴趣" },
+  { href: "/photography", label: "摄影" },
 ];
 
 export default function Navbar() {
@@ -23,9 +23,7 @@ export default function Navbar() {
                 key={link.href}
                 href={link.href}
                 className={`transition-colors ${
-                  active
-                    ? "font-medium text-black"
-                    : "text-black/50 hover:text-black"
+                  active ? "font-medium text-black" : "text-black/50 hover:text-black"
                 }`}
               >
                 {link.label}
