@@ -42,15 +42,15 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <p className="text-sm text-black/60">共 {total} 张</p>
 
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
-            <label className="flex items-center gap-2 text-xs text-black/60">
+          <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3 lg:w-auto lg:grid-cols-5">
+            <label className="flex flex-col gap-1 text-xs text-black/60">
               <span>排序字段</span>
               <select
                 value={params.sort}
                 onChange={(event) =>
                   pushParams({ sort: event.target.value as PhotoSortField }, true)
                 }
-                className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
+                className="h-9 w-full rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 {SORT_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -60,14 +60,14 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
+            <label className="flex flex-col gap-1 text-xs text-black/60">
               <span>排序方向</span>
               <select
                 value={params.order}
                 onChange={(event) =>
                   pushParams({ order: event.target.value as PhotoSortOrder }, true)
                 }
-                className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
+                className="h-9 w-full rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 {ORDER_OPTIONS.map((option) => (
                   <option key={option.value} value={option.value}>
@@ -77,14 +77,14 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
+            <label className="flex flex-col gap-1 text-xs text-black/60">
               <span>构图方向</span>
               <select
                 value={params.orientation ?? ""}
                 onChange={(event) =>
                   pushParams({ orientation: event.target.value || undefined }, true)
                 }
-                className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
+                className="h-9 w-full rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 <option value="">全部</option>
                 {filters?.orientations.map((item) => (
@@ -95,7 +95,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
+            <label className="flex flex-col gap-1 text-xs text-black/60">
               <span>年份</span>
               <select
                 value={params.year ? String(params.year) : ""}
@@ -107,7 +107,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                     true,
                   )
                 }
-                className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
+                className="h-9 w-full rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 <option value="">全部</option>
                 {filters?.years.map((year) => (
@@ -118,12 +118,12 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
+            <label className="flex flex-col gap-1 text-xs text-black/60">
               <span>分类</span>
               <select
                 value={params.category ?? ""}
                 onChange={(event) => pushParams({ category: event.target.value || undefined }, true)}
-                className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
+                className="h-9 w-full rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 <option value="">全部</option>
                 {filters?.categories.map((category) => (

@@ -36,16 +36,16 @@ export default function PhotoSearchBar({ initialQuery }: PhotoSearchBarProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full flex-col gap-3 sm:flex-row">
+    <form onSubmit={handleSubmit} className="flex w-full items-center gap-2 sm:gap-3">
       <input
         value={query}
         onChange={(event) => setQuery(event.target.value)}
         placeholder="搜索标题、标签、文件名，如：天空 风筝 日落"
-        className="h-12 flex-1 rounded-xl border border-black/15 bg-white px-4 text-sm text-black outline-none transition focus:border-black/40 focus:ring-2 focus:ring-black/10"
+        className="h-12 min-w-0 flex-1 rounded-xl border border-black/15 bg-white px-4 text-sm text-black outline-none transition focus:border-black/40 focus:ring-2 focus:ring-black/10"
       />
       <button
         type="submit"
-        className="h-12 rounded-xl border border-black bg-black px-6 text-sm font-medium text-white transition hover:opacity-90"
+        className="h-12 shrink-0 rounded-xl border border-black bg-black px-4 text-sm font-medium text-white transition hover:opacity-90 sm:px-6"
       >
         搜索
       </button>
