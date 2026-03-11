@@ -1,6 +1,10 @@
-﻿import Link from "next/link";
+﻿import PhotoDetailError from "@/components/photography/PhotoDetailError";
+import PhotoDetailPage from "@/components/photography/PhotoDetailPage";
+import { ApiRequestError } from "@/lib/api";
+import { getPhotoDetail } from "@/lib/photo-api";
+import { notFound } from "next/navigation";
 
-type PhotoDetailPageProps = {
+type PhotoDetailRouteProps = {
   params: { uuid: string } | Promise<{ uuid: string }>;
 };
 
@@ -14,28 +18,31 @@ async function resolveParams(
   return params as { uuid: string };
 }
 
-export default async function PhotoDetailPlaceholderPage({ params }: PhotoDetailPageProps) {
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error && error.message) {
+    return error.message;
+  }
+
+  return "网络异常，请稍后重试。";
+}
+
+export default async function PhotoDetailRoutePage({ params }: PhotoDetailRouteProps) {
   const { uuid } = await resolveParams(params);
+  let photo = null;
 
-  return (
-    <main className="min-h-[calc(100vh-4rem)] bg-[#fcfcfc] px-6 py-16">
-      <section className="mx-auto max-w-3xl rounded-2xl border border-black/10 bg-white p-8">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-black/50">摄影</p>
-        <h1 className="mt-3 text-2xl font-semibold tracking-tight">图片详情页占位</h1>
-        <p className="mt-4 text-sm text-black/65">该路由已预留，可直接用于第二阶段详情页开发。</p>
+  if (!uuid) {
+    notFound();
+  }
 
-        <div className="mt-6 rounded-lg border border-black/10 bg-black/[0.03] px-4 py-3 text-sm">
-          <span className="text-black/50">图片 UUID：</span>
-          {uuid}
-        </div>
+  try {
+    photo = await getPhotoDetail(uuid);
+  } catch (error) {
+    if (error instanceof ApiRequestError && error.status === 404) {
+      notFound();
+    }
 
-        <Link
-          href="/photography"
-          className="mt-6 inline-flex h-10 items-center rounded-lg border border-black/20 px-4 text-sm transition hover:bg-black hover:text-white"
-        >
-          返回摄影列表
-        </Link>
-      </section>
-    </main>
-  );
+    return <PhotoDetailError message={getErrorMessage(error)} />;
+  }
+
+  return <PhotoDetailPage photo={photo} />;
 }

@@ -1,6 +1,6 @@
 ﻿import { apiGet } from "@/lib/api";
 import { toPhotoApiQuery } from "@/lib/photo-query";
-import type { FilterData, PhotoListData, PhotoListParams } from "@/types/photo";
+import type { FilterData, PhotoDetail, PhotoListData, PhotoListParams } from "@/types/photo";
 
 export async function getPhotos(params: PhotoListParams): Promise<PhotoListData> {
   return apiGet<PhotoListData>("/photos", toPhotoApiQuery(params));
@@ -8,4 +8,8 @@ export async function getPhotos(params: PhotoListParams): Promise<PhotoListData>
 
 export async function getFilters(): Promise<FilterData> {
   return apiGet<FilterData>("/filters");
+}
+
+export async function getPhotoDetail(uuid: string): Promise<PhotoDetail> {
+  return apiGet<PhotoDetail>(`/photos/${encodeURIComponent(uuid)}`);
 }

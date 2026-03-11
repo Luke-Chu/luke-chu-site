@@ -4,6 +4,18 @@ type QueryPrimitive = string | number | boolean;
 
 export type ApiQuery = Record<string, QueryPrimitive | QueryPrimitive[] | null | undefined>;
 
+export class ApiRequestError extends Error {
+  status: number;
+  code?: number;
+
+  constructor(message: string, status: number, code?: number) {
+    super(message);
+    this.name = "ApiRequestError";
+    this.status = status;
+    this.code = code;
+  }
+}
+
 function getApiBaseUrl(): string {
   const baseUrl =
     process.env.API_BASE_URL?.trim() || process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
@@ -63,7 +75,7 @@ export async function apiGet<T>(path: string, query?: ApiQuery, init?: RequestIn
 
   if (!response.ok) {
     const message = payload?.message ?? `请求失败，状态码：${response.status}。`;
-    throw new Error(message);
+    throw new ApiRequestError(message, response.status, payload?.code);
   }
 
   if (!payload || typeof payload.code !== "number") {
@@ -71,7 +83,11 @@ export async function apiGet<T>(path: string, query?: ApiQuery, init?: RequestIn
   }
 
   if (payload.code !== 0) {
-    throw new Error(payload.message || `API 请求失败，错误码：${payload.code}。`);
+    throw new ApiRequestError(
+      payload.message || `API 请求失败，错误码：${payload.code}。`,
+      response.status,
+      payload.code,
+    );
   }
 
   return payload.data;
