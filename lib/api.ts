@@ -5,10 +5,11 @@ type QueryPrimitive = string | number | boolean;
 export type ApiQuery = Record<string, QueryPrimitive | QueryPrimitive[] | null | undefined>;
 
 function getApiBaseUrl(): string {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  const baseUrl =
+    process.env.API_BASE_URL?.trim() || process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
 
   if (!baseUrl) {
-    throw new Error("未配置 NEXT_PUBLIC_API_BASE_URL。");
+    throw new Error("未配置 API_BASE_URL 或 NEXT_PUBLIC_API_BASE_URL。");
   }
 
   return baseUrl.replace(/\/+$/, "");

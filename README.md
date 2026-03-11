@@ -10,17 +10,23 @@
 npm install
 ```
 
-2. 配置环境变量
+2. 配置环境变量（推荐使用 `.env`）
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 至少需要：
 
 ```bash
-NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
+API_BASE_URL=http://127.0.0.1:8080/api/v1
+NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8080/api/v1
 ```
+
+优先级说明：
+
+- `API_BASE_URL`：服务端请求优先使用（推荐生产环境配置）
+- `NEXT_PUBLIC_API_BASE_URL`：仅在未配置 `API_BASE_URL` 时兜底
 
 3. 启动开发服务
 
@@ -41,8 +47,8 @@ npm run dev
 - `GET /photos`：摄影列表（搜索、排序、分页、基础筛选）
 - `GET /filters`：筛选项（年份、分类、朝向、标签信息）
 
-> 上述接口会基于 `NEXT_PUBLIC_API_BASE_URL` 拼接，例如：
-> `http://localhost:8080/api/v1/photos`
+> 上述接口会基于 `API_BASE_URL`（未配置时回退到 `NEXT_PUBLIC_API_BASE_URL`）拼接，例如：
+> `http://127.0.0.1:8080/api/v1/photos`
 
 ### 第一阶段已实现
 
