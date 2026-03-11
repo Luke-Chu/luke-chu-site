@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+﻿# luke-chu-site
 
-## Getting Started
+基于 Next.js App Router 的个人网站前端项目。
 
-First, run the development server:
+## 本地启动
+
+1. 安装依赖
+
+```bash
+npm install
+```
+
+2. 配置环境变量
+
+```bash
+cp .env.example .env.local
+```
+
+至少需要：
+
+```bash
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8080/api/v1
+```
+
+3. 启动开发服务
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+访问：`http://localhost:3000`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 摄影页面（第一阶段）
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+摄影列表页路径：`/photography`
 
-## Learn More
+当前已从静态数据迁移为 API 驱动主流程，不再依赖 `data/photos.ts` 作为摄影页数据源。
 
-To learn more about Next.js, take a look at the following resources:
+### 已接入后端接口
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `GET /photos`：摄影列表（搜索、排序、分页、基础筛选）
+- `GET /filters`：筛选项（年份、分类、朝向、标签信息）
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> 上述接口会基于 `NEXT_PUBLIC_API_BASE_URL` 拼接，例如：
+> `http://localhost:8080/api/v1/photos`
 
-## Deploy on Vercel
+### 第一阶段已实现
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- 列表页 API 接入（Server Component 拉取数据）
+- URL Query 作为页面状态来源
+- 搜索（`q`）
+- 排序字段与排序方向（`sort` / `order`）
+- 基础筛选（`orientation` / `year` / `category`）
+- 分页（`page` / `pageSize`）
+- 图片密集网格展示与 hover 信息层
+- 点击图片跳转详情路径：`/photography/[uuid]`
+- 详情页最小占位页（第二阶段可直接扩展）
+- 加载态与错误态页面
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 第二阶段待实现
+
+- 完整详情页 UI 与数据接入
+- 点赞 / 下载 / 浏览计数接口
+- 复杂标签筛选交互（多选、组合逻辑增强）
+- 进一步优化布局（如更复杂瀑布流）
+
+## 远程图片配置
+
+项目已在 `next.config.ts` 中支持远程图片加载。
+
+- 可通过 `NEXT_PUBLIC_IMAGE_HOSTS` 配置正式 OSS 域名（逗号分隔）
+- 第一阶段为了联调便利，未配置域名时默认放开 `https` 通配（上线前建议收敛为明确域名）
