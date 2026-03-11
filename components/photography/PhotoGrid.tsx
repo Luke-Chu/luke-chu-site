@@ -16,9 +16,11 @@ export default function PhotoGrid({ photos }: PhotoGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
+    <div className="columns-1 gap-2 sm:columns-2 lg:columns-3">
       {photos.map((photo) => (
-        <PhotoCard key={photo.uuid} photo={photo} />
+        <div key={photo.uuid} className="mb-2 break-inside-avoid">
+          <PhotoCard photo={photo} />
+        </div>
       ))}
     </div>
   );

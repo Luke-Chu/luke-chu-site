@@ -16,7 +16,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
   return (
     <Link
       href={`/photography/${photo.uuid}`}
-      className="group relative block overflow-hidden rounded-xl bg-black/5"
+      className="group relative block overflow-hidden rounded-md bg-black/5"
       aria-label={`打开图片 ${title}`}
     >
       <div className="relative w-full" style={{ aspectRatio: `${width} / ${height}` }}>
