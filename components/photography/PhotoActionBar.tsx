@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { downloadPhoto, likePhoto, viewPhoto } from "@/lib/photo-api";
 
 type PhotoActionBarProps = {
@@ -47,6 +47,9 @@ export default function PhotoActionBar({
   const [viewError, setViewError] = useState<string | null>(null);
   const [likeError, setLikeError] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
+  const [viewInfo, setViewInfo] = useState<string | null>(null);
+  const [likeInfo, setLikeInfo] = useState<string | null>(null);
+  const [downloadInfo, setDownloadInfo] = useState<string | null>(null);
   const viewedUuidRef = useRef<string | null>(null);
 
   useEffect(() => {
@@ -57,10 +60,34 @@ export default function PhotoActionBar({
     try {
       const savedLiked = window.localStorage.getItem(getLikeStorageKey(photoUuid));
       setIsLiked(savedLiked === "1");
+      setLikeInfo(savedLiked === "1" ? "你已点赞过这张图片" : null);
     } catch {
       setIsLiked(false);
+      setLikeInfo(null);
     }
   }, [photoUuid]);
+
+  const reportViewCount = useCallback(async () => {
+    if (!photoUuid || isViewing) {
+      return;
+    }
+
+    setIsViewing(true);
+    setViewError(null);
+    setViewInfo("正在上报浏览计数...");
+
+    try {
+      const data = await viewPhoto(photoUuid);
+      setCurrentViewCount(data.viewCount);
+      setViewInfo("浏览计数已更新");
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "浏览上报失败";
+      setViewError(message);
+      setViewInfo(null);
+    } finally {
+      setIsViewing(false);
+    }
+  }, [isViewing, photoUuid]);
 
   useEffect(() => {
     if (!photoUuid || viewedUuidRef.current === photoUuid) {
@@ -68,24 +95,8 @@ export default function PhotoActionBar({
     }
 
     viewedUuidRef.current = photoUuid;
-
-    const reportView = async () => {
-      setIsViewing(true);
-      setViewError(null);
-
-      try {
-        const data = await viewPhoto(photoUuid);
-        setCurrentViewCount(data.viewCount);
-      } catch (error: unknown) {
-        const message = error instanceof Error ? error.message : "浏览上报失败";
-        setViewError(message);
-      } finally {
-        setIsViewing(false);
-      }
-    };
-
-    void reportView();
-  }, [photoUuid]);
+    void reportViewCount();
+  }, [photoUuid, reportViewCount]);
 
   async function handleLike() {
     if (!photoUuid || isLiking) {
@@ -94,11 +105,13 @@ export default function PhotoActionBar({
 
     setIsLiking(true);
     setLikeError(null);
+    setLikeInfo("正在提交点赞...");
 
     try {
       const data = await likePhoto(photoUuid);
       setCurrentLikeCount(data.likeCount);
       setIsLiked(data.liked);
+      setLikeInfo(data.liked ? "点赞成功，感谢支持" : "已点赞过，本次未重复计数");
 
       if (typeof window !== "undefined") {
         if (data.liked) {
@@ -110,6 +123,7 @@ export default function PhotoActionBar({
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "点赞失败";
       setLikeError(message);
+      setLikeInfo(null);
     } finally {
       setIsLiking(false);
     }
@@ -122,14 +136,17 @@ export default function PhotoActionBar({
 
     setIsDownloading(true);
     setDownloadError(null);
+    setDownloadInfo("正在请求下载链接...");
 
     try {
       const data = await downloadPhoto(photoUuid);
       setCurrentDownloadCount(data.downloadCount);
+      setDownloadInfo("下载已开始");
       triggerDownload(data.downloadUrl, filename);
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "下载失败";
       setDownloadError(message);
+      setDownloadInfo(null);
     } finally {
       setIsDownloading(false);
     }
@@ -152,10 +169,52 @@ export default function PhotoActionBar({
         </div>
       </div>
 
-      {isViewing ? <p className="mt-2 text-xs text-black/50">正在更新浏览计数...</p> : null}
-      {viewError ? <p className="mt-2 text-xs text-red-600">{viewError}</p> : null}
-      {likeError ? <p className="mt-2 text-xs text-red-600">{likeError}</p> : null}
-      {downloadError ? <p className="mt-2 text-xs text-red-600">{downloadError}</p> : null}
+      <div className="mt-2 space-y-1.5" aria-live="polite">
+        {viewInfo ? <p className="text-xs text-black/55">{viewInfo}</p> : null}
+        {viewError ? (
+          <div className="flex flex-wrap items-center gap-2 text-xs text-red-600">
+            <span>{viewError}</span>
+            <button
+              type="button"
+              onClick={() => void reportViewCount()}
+              disabled={isViewing}
+              className="rounded border border-red-300 px-2 py-0.5 text-[11px] disabled:opacity-60"
+            >
+              重试浏览上报
+            </button>
+          </div>
+        ) : null}
+
+        {likeInfo ? <p className="text-xs text-black/55">{likeInfo}</p> : null}
+        {likeError ? (
+          <div className="flex flex-wrap items-center gap-2 text-xs text-red-600">
+            <span>{likeError}</span>
+            <button
+              type="button"
+              onClick={() => void handleLike()}
+              disabled={isLiking || isLiked}
+              className="rounded border border-red-300 px-2 py-0.5 text-[11px] disabled:opacity-60"
+            >
+              重试点赞
+            </button>
+          </div>
+        ) : null}
+
+        {downloadInfo ? <p className="text-xs text-black/55">{downloadInfo}</p> : null}
+        {downloadError ? (
+          <div className="flex flex-wrap items-center gap-2 text-xs text-red-600">
+            <span>{downloadError}</span>
+            <button
+              type="button"
+              onClick={() => void handleDownload()}
+              disabled={isDownloading}
+              className="rounded border border-red-300 px-2 py-0.5 text-[11px] disabled:opacity-60"
+            >
+              重试下载
+            </button>
+          </div>
+        ) : null}
+      </div>
 
       <div className="mt-3 grid grid-cols-2 gap-2">
         <button
