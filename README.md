@@ -48,6 +48,7 @@ npm run dev
 - `GET /filters`：筛选项（年份、分类、朝向、标签信息）
 - `GET /photos/:uuid`：摄影详情
 - `POST /photos/:uuid/view`：浏览计数上报
+- `POST /photos/:uuid/like`：点赞
 
 > 上述接口会基于 `API_BASE_URL`（未配置时回退到 `NEXT_PUBLIC_API_BASE_URL`）拼接，例如：
 > `http://127.0.0.1:8080/api/v1/photos`
@@ -64,11 +65,12 @@ npm run dev
 - 点击图片跳转详情路径：`/photography/[uuid]`
 - 详情页完整信息展示（含基础信息、设备信息、拍摄参数、标签）
 - 进入详情页自动触发浏览上报，并更新浏览计数
+- 详情页点赞按钮可用，按接口返回更新点赞状态与计数
 - 加载态与错误态页面
 
 ## 下一步待实现
 
-- 点赞 / 下载接口
+- 下载接口
 - 复杂标签筛选交互（多选、组合逻辑增强）
 - 进一步优化布局（如更复杂瀑布流）
 

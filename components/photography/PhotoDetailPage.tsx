@@ -50,6 +50,7 @@ export default function PhotoDetailPage({ photo }: PhotoDetailPageProps) {
           <div className="space-y-4">
             <PhotoMetaPanel photo={photo} />
             <PhotoActionBar
+              key={photo.uuid}
               photoUuid={photo.uuid}
               likeCount={photo.likeCount}
               viewCount={photo.viewCount}

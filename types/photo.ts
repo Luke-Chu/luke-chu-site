@@ -128,3 +128,9 @@ export type PhotoViewData = {
   uuid: string;
   viewCount: number;
 };
+
+export type PhotoLikeData = {
+  uuid: string;
+  liked: boolean;
+  likeCount: number;
+};
