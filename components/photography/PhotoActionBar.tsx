@@ -11,6 +11,10 @@ type PhotoActionBarProps = {
   downloadCount: number;
 };
 
+function getLikeStorageKey(photoUuid: string): string {
+  return `photo-liked:${photoUuid}`;
+}
+
 function triggerDownload(downloadUrl: string, filename?: string | null): void {
   const link = document.createElement("a");
   link.href = downloadUrl;
@@ -44,6 +48,19 @@ export default function PhotoActionBar({
   const [likeError, setLikeError] = useState<string | null>(null);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const viewedUuidRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    if (!photoUuid || typeof window === "undefined") {
+      return;
+    }
+
+    try {
+      const savedLiked = window.localStorage.getItem(getLikeStorageKey(photoUuid));
+      setIsLiked(savedLiked === "1");
+    } catch {
+      setIsLiked(false);
+    }
+  }, [photoUuid]);
 
   useEffect(() => {
     if (!photoUuid || viewedUuidRef.current === photoUuid) {
@@ -82,6 +99,14 @@ export default function PhotoActionBar({
       const data = await likePhoto(photoUuid);
       setCurrentLikeCount(data.likeCount);
       setIsLiked(data.liked);
+
+      if (typeof window !== "undefined") {
+        if (data.liked) {
+          window.localStorage.setItem(getLikeStorageKey(photoUuid), "1");
+        } else {
+          window.localStorage.removeItem(getLikeStorageKey(photoUuid));
+        }
+      }
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : "点赞失败";
       setLikeError(message);
@@ -136,7 +161,7 @@ export default function PhotoActionBar({
         <button
           type="button"
           onClick={handleLike}
-          disabled={isLiking}
+          disabled={isLiking || isLiked}
           className="h-10 rounded-lg border border-black/20 text-sm transition hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
         >
           {isLiking ? "点赞中..." : isLiked ? "已点赞" : "点赞"}
