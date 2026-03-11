@@ -58,19 +58,7 @@ export function createApiUrl(path: string, query?: ApiQuery): URL {
   return url;
 }
 
-export async function apiGet<T>(path: string, query?: ApiQuery, init?: RequestInit): Promise<T> {
-  const url = createApiUrl(path, query);
-
-  const response = await fetch(url, {
-    method: "GET",
-    cache: "no-store",
-    ...init,
-    headers: {
-      Accept: "application/json",
-      ...(init?.headers ?? {}),
-    },
-  });
-
+async function parseApiResponse<T>(response: Response): Promise<T> {
   const payload = (await response.json().catch(() => null)) as ApiResponse<T> | null;
 
   if (!response.ok) {
@@ -91,4 +79,39 @@ export async function apiGet<T>(path: string, query?: ApiQuery, init?: RequestIn
   }
 
   return payload.data;
+}
+
+export async function apiGet<T>(path: string, query?: ApiQuery, init?: RequestInit): Promise<T> {
+  const url = createApiUrl(path, query);
+
+  const response = await fetch(url, {
+    method: "GET",
+    cache: "no-store",
+    ...init,
+    headers: {
+      Accept: "application/json",
+      ...(init?.headers ?? {}),
+    },
+  });
+
+  return parseApiResponse<T>(response);
+}
+
+export async function apiPost<T>(path: string, body?: unknown, init?: RequestInit): Promise<T> {
+  const url = createApiUrl(path);
+  const hasBody = body !== undefined;
+
+  const response = await fetch(url, {
+    method: "POST",
+    cache: "no-store",
+    ...init,
+    headers: {
+      Accept: "application/json",
+      ...(hasBody ? { "Content-Type": "application/json" } : {}),
+      ...(init?.headers ?? {}),
+    },
+    body: hasBody ? JSON.stringify(body) : undefined,
+  });
+
+  return parseApiResponse<T>(response);
 }

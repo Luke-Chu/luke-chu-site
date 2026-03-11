@@ -123,3 +123,8 @@ export type PhotoDetail = {
   updatedAt: string | null;
   tags: PhotoTag[];
 };
+
+export type PhotoViewData = {
+  uuid: string;
+  viewCount: number;
+};
