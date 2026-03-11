@@ -52,6 +52,7 @@ export default function PhotoDetailPage({ photo }: PhotoDetailPageProps) {
             <PhotoActionBar
               key={photo.uuid}
               photoUuid={photo.uuid}
+              filename={photo.filename}
               likeCount={photo.likeCount}
               viewCount={photo.viewCount}
               downloadCount={photo.downloadCount}

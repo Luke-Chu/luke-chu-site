@@ -3,6 +3,7 @@ import { toPhotoApiQuery } from "@/lib/photo-query";
 import type {
   FilterData,
   PhotoDetail,
+  PhotoDownloadData,
   PhotoLikeData,
   PhotoListData,
   PhotoListParams,
@@ -27,4 +28,8 @@ export async function viewPhoto(uuid: string): Promise<PhotoViewData> {
 
 export async function likePhoto(uuid: string): Promise<PhotoLikeData> {
   return apiPost<PhotoLikeData>(`/photos/${encodeURIComponent(uuid)}/like`);
+}
+
+export async function downloadPhoto(uuid: string): Promise<PhotoDownloadData> {
+  return apiPost<PhotoDownloadData>(`/photos/${encodeURIComponent(uuid)}/download`);
 }

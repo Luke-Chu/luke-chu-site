@@ -134,3 +134,9 @@ export type PhotoLikeData = {
   liked: boolean;
   likeCount: number;
 };
+
+export type PhotoDownloadData = {
+  uuid: string;
+  downloadCount: number;
+  downloadUrl: string;
+};
