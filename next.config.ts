@@ -11,7 +11,7 @@ const remotePatterns: NonNullable<NextConfig["images"]>["remotePatterns"] = [
 ];
 
 if (imageHosts.length === 0) {
-  // Temporary fallback for phase 1. Replace with explicit OSS hostnames in production.
+  // 第一阶段联调用兜底配置；生产环境请替换为明确的 OSS 域名白名单。
   remotePatterns.push({ protocol: "https", hostname: "**" });
 }
 

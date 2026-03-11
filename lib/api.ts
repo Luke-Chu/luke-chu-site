@@ -8,7 +8,7 @@ function getApiBaseUrl(): string {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
 
   if (!baseUrl) {
-    throw new Error("NEXT_PUBLIC_API_BASE_URL is not configured.");
+    throw new Error("未配置 NEXT_PUBLIC_API_BASE_URL。");
   }
 
   return baseUrl.replace(/\/+$/, "");
@@ -61,16 +61,16 @@ export async function apiGet<T>(path: string, query?: ApiQuery, init?: RequestIn
   const payload = (await response.json().catch(() => null)) as ApiResponse<T> | null;
 
   if (!response.ok) {
-    const message = payload?.message ?? `Request failed with status ${response.status}.`;
+    const message = payload?.message ?? `请求失败，状态码：${response.status}。`;
     throw new Error(message);
   }
 
   if (!payload || typeof payload.code !== "number") {
-    throw new Error("Invalid API response payload.");
+    throw new Error("API 响应数据格式不正确。");
   }
 
   if (payload.code !== 0) {
-    throw new Error(payload.message || `API request failed with code ${payload.code}.`);
+    throw new Error(payload.message || `API 请求失败，错误码：${payload.code}。`);
   }
 
   return payload.data;

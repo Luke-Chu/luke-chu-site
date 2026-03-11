@@ -40,14 +40,14 @@ export default function PhotoSearchBar({ initialQuery }: PhotoSearchBarProps) {
       <input
         value={query}
         onChange={(event) => setQuery(event.target.value)}
-        placeholder="Search title, tags, filename. Example: sky kite sunset"
+        placeholder="搜索标题、标签、文件名，如：天空 风筝 日落"
         className="h-12 flex-1 rounded-xl border border-black/15 bg-white px-4 text-sm text-black outline-none transition focus:border-black/40 focus:ring-2 focus:ring-black/10"
       />
       <button
         type="submit"
         className="h-12 rounded-xl border border-black bg-black px-6 text-sm font-medium text-white transition hover:opacity-90"
       >
-        Search
+        搜索
       </button>
     </form>
   );

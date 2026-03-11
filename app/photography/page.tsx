@@ -60,13 +60,13 @@ export default async function PhotographyPage({ searchParams }: PhotographyPageP
   if (photosResult.status === "fulfilled") {
     photoData = photosResult.value;
   } else {
-    photoError = getErrorMessage(photosResult.reason, "Unable to load photo list.");
+    photoError = getErrorMessage(photosResult.reason, "加载图片列表失败。");
   }
 
   if (filtersResult.status === "fulfilled") {
     filterData = filtersResult.value;
   } else {
-    filtersError = getErrorMessage(filtersResult.reason, "Unable to load filter options.");
+    filtersError = getErrorMessage(filtersResult.reason, "加载筛选项失败。");
   }
 
   const pagination =
@@ -84,13 +84,13 @@ export default async function PhotographyPage({ searchParams }: PhotographyPageP
       <section className="mx-auto w-full max-w-6xl px-6 py-6 md:py-8">
         {photoError ? (
           <div className="mb-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-            Failed to load photos: {photoError}
+            图片加载失败：{photoError}
           </div>
         ) : null}
 
         {filtersError ? (
           <div className="mb-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
-            Filter options unavailable: {filtersError}
+            筛选项暂不可用：{filtersError}
           </div>
         ) : null}
 

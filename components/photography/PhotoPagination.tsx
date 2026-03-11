@@ -38,11 +38,11 @@ export default function PhotoPagination({ pagination }: PhotoPaginationProps) {
         disabled={!canGoPrev}
         className="h-9 rounded-lg border border-black/20 px-3 text-sm disabled:cursor-not-allowed disabled:opacity-40"
       >
-        Previous
+        上一页
       </button>
 
       <p className="text-sm text-black/65">
-        Page {page} / {totalPages}
+        第 {page} / {totalPages} 页
       </p>
 
       <button
@@ -51,7 +51,7 @@ export default function PhotoPagination({ pagination }: PhotoPaginationProps) {
         disabled={!canGoNext}
         className="h-9 rounded-lg border border-black/20 px-3 text-sm disabled:cursor-not-allowed disabled:opacity-40"
       >
-        Next
+        下一页
       </button>
     </div>
   );

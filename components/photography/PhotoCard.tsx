@@ -11,13 +11,13 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
   const imageUrl = photo.thumbUrl || photo.displayUrl || "";
   const width = photo.width && photo.width > 0 ? photo.width : 4;
   const height = photo.height && photo.height > 0 ? photo.height : 3;
-  const title = photo.titleCn || photo.titleEn || "Untitled";
+  const title = photo.titleCn || photo.titleEn || "未命名";
 
   return (
     <Link
       href={`/photography/${photo.uuid}`}
       className="group relative block overflow-hidden rounded-xl bg-black/5"
-      aria-label={`Open photo ${title}`}
+      aria-label={`打开图片 ${title}`}
     >
       <div className="relative w-full" style={{ aspectRatio: `${width} / ${height}` }}>
         {imageUrl ? (
@@ -30,7 +30,7 @@ export default function PhotoCard({ photo }: PhotoCardProps) {
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-black/10 text-xs text-black/50">
-            No image
+            图片不可用
           </div>
         )}
       </div>

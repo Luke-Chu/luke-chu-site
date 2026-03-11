@@ -9,8 +9,8 @@ export default function PhotoGrid({ photos }: PhotoGridProps) {
   if (photos.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-black/20 bg-white px-6 py-16 text-center">
-        <p className="text-base font-medium">No matching photos found.</p>
-        <p className="mt-2 text-sm text-black/55">Try adjusting keywords, sorting, or filters.</p>
+        <p className="text-base font-medium">暂无匹配的图片</p>
+        <p className="mt-2 text-sm text-black/55">请尝试调整关键词、排序或筛选条件。</p>
       </div>
     );
   }

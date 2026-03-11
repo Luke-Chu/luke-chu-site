@@ -5,15 +5,15 @@ import { mergePhotoSearchParams } from "@/lib/photo-query";
 import type { FilterData, PhotoListParams, PhotoSortField, PhotoSortOrder } from "@/types/photo";
 
 const SORT_OPTIONS: Array<{ label: string; value: PhotoSortField }> = [
-  { label: "Shot time", value: "shot_time" },
-  { label: "Likes", value: "like_count" },
-  { label: "Views", value: "view_count" },
-  { label: "Downloads", value: "download_count" },
+  { label: "拍摄时间", value: "shot_time" },
+  { label: "点赞数", value: "like_count" },
+  { label: "浏览量", value: "view_count" },
+  { label: "下载量", value: "download_count" },
 ];
 
 const ORDER_OPTIONS: Array<{ label: string; value: PhotoSortOrder }> = [
-  { label: "Desc", value: "desc" },
-  { label: "Asc", value: "asc" },
+  { label: "降序", value: "desc" },
+  { label: "升序", value: "asc" },
 ];
 
 type PhotoToolbarProps = {
@@ -40,11 +40,11 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
     <section className="border-b border-black/10 bg-white">
       <div className="mx-auto w-full max-w-6xl px-6 py-4">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <p className="text-sm text-black/60">{total} photos</p>
+          <p className="text-sm text-black/60">共 {total} 张</p>
 
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:flex lg:flex-wrap">
             <label className="flex items-center gap-2 text-xs text-black/60">
-              <span>Sort</span>
+              <span>排序字段</span>
               <select
                 value={params.sort}
                 onChange={(event) =>
@@ -61,7 +61,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
             </label>
 
             <label className="flex items-center gap-2 text-xs text-black/60">
-              <span>Order</span>
+              <span>排序方向</span>
               <select
                 value={params.order}
                 onChange={(event) =>
@@ -78,7 +78,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
             </label>
 
             <label className="flex items-center gap-2 text-xs text-black/60">
-              <span>Orientation</span>
+              <span>构图方向</span>
               <select
                 value={params.orientation ?? ""}
                 onChange={(event) =>
@@ -86,7 +86,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                 }
                 className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
-                <option value="">All</option>
+                <option value="">全部</option>
                 {filters?.orientations.map((item) => (
                   <option key={item.name} value={item.name}>
                     {item.name} ({item.count})
@@ -96,7 +96,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
             </label>
 
             <label className="flex items-center gap-2 text-xs text-black/60">
-              <span>Year</span>
+              <span>年份</span>
               <select
                 value={params.year ? String(params.year) : ""}
                 onChange={(event) =>
@@ -109,7 +109,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                 }
                 className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
-                <option value="">All</option>
+                <option value="">全部</option>
                 {filters?.years.map((year) => (
                   <option key={year} value={year}>
                     {year}
@@ -119,13 +119,13 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
             </label>
 
             <label className="flex items-center gap-2 text-xs text-black/60">
-              <span>Category</span>
+              <span>分类</span>
               <select
                 value={params.category ?? ""}
                 onChange={(event) => pushParams({ category: event.target.value || undefined }, true)}
                 className="h-9 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
-                <option value="">All</option>
+                <option value="">全部</option>
                 {filters?.categories.map((category) => (
                   <option key={category} value={category}>
                     {category}
