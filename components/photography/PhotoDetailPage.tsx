@@ -10,11 +10,11 @@ type PhotoDetailPageProps = {
 };
 
 function isPortraitPhoto(photo: PhotoDetail): boolean {
-  if (photo.orientation === "纵向" || photo.orientation === "portrait") {
+  if (photo.orientation === "portrait") {
     return true;
   }
 
-  if (photo.orientation === "横向" || photo.orientation === "landscape") {
+  if (photo.orientation === "landscape") {
     return false;
   }
 
