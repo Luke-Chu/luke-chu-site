@@ -52,6 +52,16 @@ function parseCategoryOption(option: CategoryOption): { value: string } {
   return { value: option.name };
 }
 
+function ToolbarLabel({ text }: { text: string }) {
+  return (
+    <span className="inline-flex w-14 shrink-0 justify-between whitespace-nowrap">
+      {Array.from(text).map((char, index) => (
+        <span key={`${text}-${index}`}>{char}</span>
+      ))}
+    </span>
+  );
+}
+
 type PhotoToolbarProps = {
   params: PhotoListParams;
   filters: FilterData | null;
@@ -78,9 +88,9 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <p className="text-sm text-black/60">共 {total} 张</p>
 
-          <div className="grid w-full grid-cols-2 gap-2 lg:w-auto lg:grid-cols-5">
-            <label className="flex items-center gap-2 text-xs text-black/60">
-              <span className="shrink-0 whitespace-nowrap">排序字段</span>
+          <div className="grid w-full grid-cols-2 gap-x-4 gap-y-2 lg:w-auto lg:grid-cols-5 lg:gap-x-6">
+            <label className="flex items-center gap-1.5 text-xs text-black/60">
+              <ToolbarLabel text="排序字段" />
               <select
                 value={params.sort}
                 onChange={(event) =>
@@ -96,8 +106,8 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
-              <span className="shrink-0 whitespace-nowrap">排序方向</span>
+            <label className="flex items-center gap-1.5 text-xs text-black/60">
+              <ToolbarLabel text="排序方向" />
               <select
                 value={params.order}
                 onChange={(event) =>
@@ -113,8 +123,8 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
-              <span className="shrink-0 whitespace-nowrap">构图方向</span>
+            <label className="flex items-center gap-1.5 text-xs text-black/60">
+              <ToolbarLabel text="构图方向" />
               <select
                 value={params.orientation ?? ""}
                 onChange={(event) =>
@@ -131,8 +141,8 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
-              <span className="shrink-0 whitespace-nowrap">年份</span>
+            <label className="flex items-center gap-1.5 text-xs text-black/60">
+              <ToolbarLabel text="年份" />
               <select
                 value={params.year ? String(params.year) : ""}
                 onChange={(event) =>
@@ -158,8 +168,8 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               </select>
             </label>
 
-            <label className="flex items-center gap-2 text-xs text-black/60">
-              <span className="shrink-0 whitespace-nowrap">分类</span>
+            <label className="flex items-center gap-1.5 text-xs text-black/60">
+              <ToolbarLabel text="分类" />
               <select
                 value={params.category ?? ""}
                 onChange={(event) => pushParams({ category: event.target.value || undefined }, true)}
