@@ -2,7 +2,14 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { mergePhotoSearchParams } from "@/lib/photo-query";
-import type { FilterData, PhotoListParams, PhotoSortField, PhotoSortOrder } from "@/types/photo";
+import type {
+  CategoryOption,
+  FilterData,
+  PhotoListParams,
+  PhotoSortField,
+  PhotoSortOrder,
+  YearOption,
+} from "@/types/photo";
 
 const SORT_OPTIONS: Array<{ label: string; value: PhotoSortField }> = [
   { label: "拍摄时间", value: "shot_time" },
@@ -29,13 +36,47 @@ function getOrientationLabel(name: string): string {
   return name;
 }
 
+function getOrientationKey(name: string): string {
+  if (name === "landscape") {
+    return "横向";
+  }
+  if (name === "portrait") {
+    return "纵向";
+  }
+  if (name === "square") {
+    return "方形";
+  }
+  return name;
+}
+
+function parseYearOption(option: YearOption): { value: number; count?: number } {
+  if (typeof option === "number") {
+    return { value: option };
+  }
+
+  return { value: option.year, count: option.count };
+}
+
+function parseCategoryOption(option: CategoryOption): { value: string; count?: number } {
+  if (typeof option === "string") {
+    return { value: option };
+  }
+
+  return { value: option.name, count: option.count };
+}
+
 type PhotoToolbarProps = {
   params: PhotoListParams;
   filters: FilterData | null;
   total: number;
+  resultCounts: {
+    orientationCounts: Record<string, number>;
+    yearCounts: Record<number, number>;
+    categoryCounts: Record<string, number>;
+  };
 };
 
-export default function PhotoToolbar({ params, filters, total }: PhotoToolbarProps) {
+export default function PhotoToolbar({ params, filters, total, resultCounts }: PhotoToolbarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const currentSearchParams = useSearchParams();
@@ -102,7 +143,8 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                 <option value="">全部</option>
                 {filters?.orientations.map((item) => (
                   <option key={item.name} value={item.name}>
-                    {getOrientationLabel(item.name)} ({item.count})
+                    {getOrientationLabel(item.name)} (
+                    {resultCounts.orientationCounts[getOrientationKey(item.name)] ?? item.count ?? 0})
                   </option>
                 ))}
               </select>
@@ -123,11 +165,16 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                 className="h-9 min-w-0 flex-1 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 <option value="">全部</option>
-                {filters?.years.map((year) => (
-                  <option key={year} value={year}>
-                    {year}
-                  </option>
-                ))}
+                {filters?.years.map((option) => {
+                  const yearOption = parseYearOption(option);
+                  const count = resultCounts.yearCounts[yearOption.value] ?? yearOption.count ?? 0;
+
+                  return (
+                    <option key={yearOption.value} value={yearOption.value}>
+                      {yearOption.value} ({count})
+                    </option>
+                  );
+                })}
               </select>
             </label>
 
@@ -139,11 +186,17 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                 className="h-9 min-w-0 flex-1 rounded-lg border border-black/15 bg-white px-2 text-sm text-black"
               >
                 <option value="">全部</option>
-                {filters?.categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
+                {filters?.categories.map((option) => {
+                  const categoryOption = parseCategoryOption(option);
+                  const count =
+                    resultCounts.categoryCounts[categoryOption.value] ?? categoryOption.count ?? 0;
+
+                  return (
+                    <option key={categoryOption.value} value={categoryOption.value}>
+                      {categoryOption.value} ({count})
+                    </option>
+                  );
+                })}
               </select>
             </label>
           </div>

@@ -25,6 +25,7 @@ export type PhotoListItem = {
   id: number;
   uuid: string;
   filename: string;
+  category?: string | null;
   titleCn: string | null;
   titleEn: string | null;
   thumbUrl: string | null;
@@ -70,12 +71,16 @@ export type PhotoListData = {
 
 export type OrientationOption = {
   name: PhotoOrientation;
-  count: number;
+  count?: number;
 };
 
+export type YearOption = number | { year: number; count?: number };
+
+export type CategoryOption = string | { name: string; count?: number };
+
 export type FilterData = {
-  years: number[];
-  categories: string[];
+  years: YearOption[];
+  categories: CategoryOption[];
   orientations: OrientationOption[];
   tagTypes: PhotoTagType[];
   tags: Record<string, PhotoTag[]>;

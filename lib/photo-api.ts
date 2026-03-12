@@ -14,8 +14,21 @@ export async function getPhotos(params: PhotoListParams): Promise<PhotoListData>
   return apiGet<PhotoListData>("/photos", toPhotoApiQuery(params));
 }
 
-export async function getFilters(): Promise<FilterData> {
-  return apiGet<FilterData>("/filters");
+function toFilterApiQuery(params?: PhotoListParams): Record<string, string | number> | undefined {
+  if (!params) {
+    return undefined;
+  }
+
+  const query = toPhotoApiQuery(params);
+  delete query.page;
+  delete query.pageSize;
+  delete query.sort;
+  delete query.order;
+  return query;
+}
+
+export async function getFilters(params?: PhotoListParams): Promise<FilterData> {
+  return apiGet<FilterData>("/filters", toFilterApiQuery(params));
 }
 
 export async function getPhotoDetail(uuid: string): Promise<PhotoDetail> {
