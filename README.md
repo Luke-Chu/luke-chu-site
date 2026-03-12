@@ -20,13 +20,12 @@ cp .env.example .env
 
 ```bash
 API_BASE_URL=http://127.0.0.1:8080/api/v1
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8080/api/v1
 ```
 
 优先级说明：
 
 - `API_BASE_URL`：服务端请求优先使用（推荐生产环境配置）
-- `NEXT_PUBLIC_API_BASE_URL`：仅在未配置 `API_BASE_URL` 时兜底
+- `NEXT_PUBLIC_API_BASE_URL`：客户端可选覆盖；未配置时默认走同域 `/api/v1`
 
 3. 启动开发服务
 
@@ -51,7 +50,7 @@ npm run dev
 - `POST /photos/:uuid/like`：点赞
 - `POST /photos/:uuid/download`：下载计数与下载链接
 
-> 上述接口会基于 `API_BASE_URL`（未配置时回退到 `NEXT_PUBLIC_API_BASE_URL`）拼接，例如：
+> 服务端接口会基于 `API_BASE_URL` 拼接；客户端行为接口默认走同域 `/api/v1`（可由 `NEXT_PUBLIC_API_BASE_URL` 覆盖），例如：
 > `http://127.0.0.1:8080/api/v1/photos`
 
 ### 当前已实现

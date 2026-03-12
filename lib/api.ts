@@ -17,20 +17,27 @@ export class ApiRequestError extends Error {
 }
 
 function getApiBaseUrl(): string {
-  const baseUrl =
-    process.env.API_BASE_URL?.trim() || process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
+  if (typeof window !== "undefined") {
+    // Client-side requests default to same-origin proxy.
+    const clientBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL?.trim() || "/api/v1";
+    return clientBaseUrl.replace(/\/+$/, "");
+  }
+
+  const baseUrl = process.env.API_BASE_URL?.trim() || process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
 
   if (!baseUrl) {
-    throw new Error("未配置 API_BASE_URL 或 NEXT_PUBLIC_API_BASE_URL。");
+    throw new Error("未配置 API_BASE_URL。服务端请求需要明确后端地址。");
   }
 
   return baseUrl.replace(/\/+$/, "");
 }
 
-function appendQuery(url: URL, query?: ApiQuery): void {
+function buildQueryString(query?: ApiQuery): string {
   if (!query) {
-    return;
+    return "";
   }
+
+  const searchParams = new URLSearchParams();
 
   for (const [key, value] of Object.entries(query)) {
     if (value === undefined || value === null) {
@@ -39,23 +46,31 @@ function appendQuery(url: URL, query?: ApiQuery): void {
 
     if (Array.isArray(value)) {
       for (const item of value) {
-        url.searchParams.append(key, String(item));
+        searchParams.append(key, String(item));
       }
       continue;
     }
 
-    url.searchParams.set(key, String(value));
+    searchParams.set(key, String(value));
   }
+
+  const queryString = searchParams.toString();
+  return queryString ? `?${queryString}` : "";
 }
 
-export function createApiUrl(path: string, query?: ApiQuery): URL {
+export function createApiUrl(path: string, query?: ApiQuery): string {
   const normalizedPath = path.replace(/^\/+/, "");
   const baseUrl = getApiBaseUrl();
-  const url = new URL(normalizedPath, `${baseUrl}/`);
+  const queryString = buildQueryString(query);
 
-  appendQuery(url, query);
+  if (/^https?:\/\//i.test(baseUrl)) {
+    const url = new URL(normalizedPath, `${baseUrl}/`);
+    url.search = queryString ? queryString.slice(1) : "";
+    return url.toString();
+  }
 
-  return url;
+  const relativeBase = `/${baseUrl.replace(/^\/+|\/+$/g, "")}`;
+  return `${relativeBase}/${normalizedPath}${queryString}`;
 }
 
 async function parseApiResponse<T>(response: Response): Promise<T> {
