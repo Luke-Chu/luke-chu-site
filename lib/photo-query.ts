@@ -80,28 +80,6 @@ function sanitizeText(value: string | undefined): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined;
 }
 
-function normalizeOrientation(value: string | undefined): string | undefined {
-  const normalized = sanitizeText(value);
-
-  if (!normalized) {
-    return undefined;
-  }
-
-  if (normalized === "landscape") {
-    return "横向";
-  }
-
-  if (normalized === "portrait") {
-    return "纵向";
-  }
-
-  if (normalized === "square") {
-    return "方形";
-  }
-
-  return normalized;
-}
-
 function sanitizeTags(value: string | string[] | undefined): string[] {
   const values = asArray(value);
 
@@ -148,7 +126,7 @@ export function normalizePhotoListParams(params: PhotoListParams): PhotoListPara
     sort,
     order,
     tags: tags.length > 0 ? tags : undefined,
-    orientation: normalizeOrientation(params.orientation),
+    orientation: sanitizeText(params.orientation),
     year,
     month,
     category: sanitizeText(params.category),

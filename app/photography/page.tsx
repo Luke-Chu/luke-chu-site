@@ -43,6 +43,24 @@ function buildFallbackPagination(photoPage: number, pageSize: number): PhotoList
   };
 }
 
+function normalizeOrientationLabel(value: string | null | undefined): string | undefined {
+  if (!value) {
+    return undefined;
+  }
+
+  if (value === "landscape") {
+    return "横向";
+  }
+  if (value === "portrait") {
+    return "纵向";
+  }
+  if (value === "square") {
+    return "方形";
+  }
+
+  return value;
+}
+
 export default async function PhotographyPage({ searchParams }: PhotographyPageProps) {
   const resolvedSearchParams = await resolveSearchParams(searchParams);
   const params = parsePhotoListParams(resolvedSearchParams);
@@ -67,6 +85,23 @@ export default async function PhotographyPage({ searchParams }: PhotographyPageP
     filterData = filtersResult.value;
   } else {
     filtersError = getErrorMessage(filtersResult.reason, "加载筛选项失败。");
+  }
+
+  const selectedOrientation = normalizeOrientationLabel(params.orientation);
+
+  if (photoData && selectedOrientation) {
+    const filteredList = photoData.list.filter(
+      (photo) => normalizeOrientationLabel(photo.orientation) === selectedOrientation,
+    );
+
+    photoData = {
+      ...photoData,
+      list: filteredList,
+      query: {
+        ...photoData.query,
+        orientation: params.orientation,
+      },
+    };
   }
 
   const pagination =

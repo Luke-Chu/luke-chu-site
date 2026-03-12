@@ -36,19 +36,6 @@ function getOrientationLabel(name: string): string {
   return name;
 }
 
-function getOrientationValue(name: string): string {
-  if (name === "landscape") {
-    return "横向";
-  }
-  if (name === "portrait") {
-    return "纵向";
-  }
-  if (name === "square") {
-    return "方形";
-  }
-  return name;
-}
-
 function parseYearOption(option: YearOption): { value: number } {
   if (typeof option === "number") {
     return { value: option };
@@ -137,7 +124,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
               >
                 <option value="">全部</option>
                 {filters?.orientations.map((item) => (
-                  <option key={item.name} value={getOrientationValue(item.name)}>
+                  <option key={item.name} value={item.name}>
                     {getOrientationLabel(item.name)}
                   </option>
                 ))}
