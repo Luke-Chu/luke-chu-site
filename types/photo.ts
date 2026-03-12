@@ -4,7 +4,14 @@ export type PhotoSortField = "shot_time" | "like_count" | "view_count" | "downlo
 
 export type PhotoSortOrder = "asc" | "desc";
 
-export type PhotoOrientation = "landscape" | "portrait" | "square" | (string & {});
+export type PhotoOrientation =
+  | "横向"
+  | "纵向"
+  | "方形"
+  | "landscape"
+  | "portrait"
+  | "square"
+  | (string & {});
 
 export type PhotoTagMode = "any" | "all";
 

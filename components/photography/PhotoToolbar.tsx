@@ -16,6 +16,19 @@ const ORDER_OPTIONS: Array<{ label: string; value: PhotoSortOrder }> = [
   { label: "升序", value: "asc" },
 ];
 
+function getOrientationLabel(name: string): string {
+  if (name === "landscape") {
+    return "横向";
+  }
+  if (name === "portrait") {
+    return "纵向";
+  }
+  if (name === "square") {
+    return "方形";
+  }
+  return name;
+}
+
 type PhotoToolbarProps = {
   params: PhotoListParams;
   filters: FilterData | null;
@@ -89,7 +102,7 @@ export default function PhotoToolbar({ params, filters, total }: PhotoToolbarPro
                 <option value="">全部</option>
                 {filters?.orientations.map((item) => (
                   <option key={item.name} value={item.name}>
-                    {item.name} ({item.count})
+                    {getOrientationLabel(item.name)} ({item.count})
                   </option>
                 ))}
               </select>

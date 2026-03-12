@@ -11,7 +11,7 @@ function getAspectRatio(photo: PhotoDetail): string {
     return `${photo.width} / ${photo.height}`;
   }
 
-  return photo.orientation === "portrait" ? "3 / 4" : "4 / 3";
+  return photo.orientation === "纵向" || photo.orientation === "portrait" ? "3 / 4" : "4 / 3";
 }
 
 export default function PhotoImageViewer({ photo }: PhotoImageViewerProps) {
