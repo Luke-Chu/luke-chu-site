@@ -39,8 +39,6 @@ npm run dev
 
 摄影列表页路径：`/photography`
 
-当前已从静态数据迁移为 API 驱动主流程，不再依赖 `data/photos.ts` 作为摄影页数据源。
-
 ### 已接入后端接口
 
 - `GET /photos`：摄影列表（搜索、排序、分页、基础筛选）
