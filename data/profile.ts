@@ -6,7 +6,7 @@ export type Contact = {
 };
 
 export const profile = {
-  name: "楚双隆",
+  name: "Luke Chu",
   role: "后端开发工程师",
   tagline: "热爱技术，追求代码的优雅与效率。",
   intro:
