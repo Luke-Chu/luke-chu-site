@@ -36,47 +36,29 @@ function getOrientationLabel(name: string): string {
   return name;
 }
 
-function getOrientationKey(name: string): string {
-  if (name === "landscape") {
-    return "横向";
-  }
-  if (name === "portrait") {
-    return "纵向";
-  }
-  if (name === "square") {
-    return "方形";
-  }
-  return name;
-}
-
-function parseYearOption(option: YearOption): { value: number; count?: number } {
+function parseYearOption(option: YearOption): { value: number } {
   if (typeof option === "number") {
     return { value: option };
   }
 
-  return { value: option.year, count: option.count };
+  return { value: option.year };
 }
 
-function parseCategoryOption(option: CategoryOption): { value: string; count?: number } {
+function parseCategoryOption(option: CategoryOption): { value: string } {
   if (typeof option === "string") {
     return { value: option };
   }
 
-  return { value: option.name, count: option.count };
+  return { value: option.name };
 }
 
 type PhotoToolbarProps = {
   params: PhotoListParams;
   filters: FilterData | null;
   total: number;
-  resultCounts: {
-    orientationCounts: Record<string, number>;
-    yearCounts: Record<number, number>;
-    categoryCounts: Record<string, number>;
-  };
 };
 
-export default function PhotoToolbar({ params, filters, total, resultCounts }: PhotoToolbarProps) {
+export default function PhotoToolbar({ params, filters, total }: PhotoToolbarProps) {
   const router = useRouter();
   const pathname = usePathname();
   const currentSearchParams = useSearchParams();
@@ -143,8 +125,7 @@ export default function PhotoToolbar({ params, filters, total, resultCounts }: P
                 <option value="">全部</option>
                 {filters?.orientations.map((item) => (
                   <option key={item.name} value={item.name}>
-                    {getOrientationLabel(item.name)} (
-                    {resultCounts.orientationCounts[getOrientationKey(item.name)] ?? item.count ?? 0})
+                    {getOrientationLabel(item.name)}
                   </option>
                 ))}
               </select>
@@ -167,11 +148,10 @@ export default function PhotoToolbar({ params, filters, total, resultCounts }: P
                 <option value="">全部</option>
                 {filters?.years.map((option) => {
                   const yearOption = parseYearOption(option);
-                  const count = resultCounts.yearCounts[yearOption.value] ?? yearOption.count ?? 0;
 
                   return (
                     <option key={yearOption.value} value={yearOption.value}>
-                      {yearOption.value} ({count})
+                      {yearOption.value}
                     </option>
                   );
                 })}
@@ -188,12 +168,10 @@ export default function PhotoToolbar({ params, filters, total, resultCounts }: P
                 <option value="">全部</option>
                 {filters?.categories.map((option) => {
                   const categoryOption = parseCategoryOption(option);
-                  const count =
-                    resultCounts.categoryCounts[categoryOption.value] ?? categoryOption.count ?? 0;
 
                   return (
                     <option key={categoryOption.value} value={categoryOption.value}>
-                      {categoryOption.value} ({count})
+                      {categoryOption.value}
                     </option>
                   );
                 })}
